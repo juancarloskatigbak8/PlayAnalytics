@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-2xl font-bold mb-4">Predict Injury Risk</h2>
+
+  <!-- === Player Input Form === -->
+  <form method="post" class="space-y-3">
+    {% csrf_token %}
+
+    <!-- Manually render each form field with label -->
+    <div class="mb-3">
+      {{ form.name.label_tag }} {{ form.name }}
+    </div>
+    <div class="mb-3">
+      {{ form.age.label_tag }} {{ form.age }}
+    </div>
+    <div class="mb-3">
+      {{ form.height_in_inches.label_tag }} {{ form.height_in_inches }}
+    </div>
+    <div class="mb-3">
+      {{ form.weight_in_pounds.label_tag }} {{ form.weight_in_pounds }}
+    </div>
+    <div class="mb-3">
+      {{ form.position.label_tag }} {{ form.position }}
+    </div>
+    <div class="mb-3">
+      {{ form.games_played.label_tag }} {{ form.games_played }}
+    </div>
+    <div class="mb-3">
+      {{ form.minutes_played.label_tag }} {{ form.minutes_played }}
+    </div>
+    <div class="mb-3">
+      {{ form.field_goals_attempted.label_tag }} {{ form.field_goals_attempted }}
+    </div>
+    <div class="mb-3">
+      {{ form.three_point_field_goals_attempted.label_tag }} {{ form.three_point_field_goals_attempted }}
+    </div>
+    <div class="mb-3">
+      {{ form.free_throws_attempted.label_tag }} {{ form.free_throws_attempted }}
+    </div>
+    <div class="mb-3">
+      {{ form.steals.label_tag }} {{ form.steals }}
+    </div>
+    <div class="mb-3">
+      {{ form.blocks.label_tag }} {{ form.blocks }}
+    </div>
+    <div class="mb-3">
+      {{ form.fouls.label_tag }} {{ form.fouls }}
+    </div>
+    <div class="mb-3">
+      {{ form.total_injuries.label_tag }} {{ form.total_injuries }}
+    </div>
+    <div class="mb-3">
+      {{ form.most_common_injury.label_tag }} {{ form.most_common_injury }}
+    </div>
+
+    <!-- Submit button to trigger prediction -->
+    <button type="submit" class="btn btn-primary">Predict</button>
+  </form>
+
+  <!-- === Injury Risk Prediction Result === -->
+  {% if predicted_risk %}
+  <div class="mt-6">
+    <h4 class="font-semibold">Injury Risk Prediction:</h4>
+    <p>{{ predicted_risk }} risk based on player stats.</p>
+    <p>The most common injury risk in the system is: <strong>{{ most_common_risk }}</strong></p>
+
+    <!-- Charts comparing predicted vs most common risk -->
+    <div class="grid grid-cols-2 gap-6 mt-4">
+      <canvas id="predictedRiskChart"></canvas>
+      <canvas id="mostCommonRiskChart"></canvas>
+    </div>
+
+    <!-- Button to save predicted player to profile -->
+    <form action="{% url 'predictor:add_to_profile' %}" method="post" class="inline-block mt-4 mr-3">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success">Save to Profile</button>
+    </form>
+
+    <!-- Link to start new prediction -->
+    <a href="{% url 'predictor:predict_injury' %}" class="btn btn-secondary mt-4 inline-block">New Prediction</a>
+
+    <!-- Include Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- === Chart: Predicted Risk Bar === -->
+    <script>
+      const predictedRiskData = {
+        labels: ['Low', 'Low-Medium', 'Medium', 'Medium-High', 'High'],
+        datasets: [{
+          label: 'Predicted Player Risk',
+          data: ['Low', 'Low-Medium', 'Medium', 'Medium-High', 'High'].map(r => r === "{{ predicted_risk }}" ? 1 : 0),
+          backgroundColor: 'rgba(54, 162, 235, 0.7)'  // Blue bar
+        }]
+      };
+
+      const mostCommonRiskData = {
+        labels: ['Low', 'Low-Medium', 'Medium', 'Medium-High', 'High'],
+        datasets: [{
+          label: 'Most Common Risk',
+          data: ['Low', 'Low-Medium', 'Medium', 'Medium-High', 'High'].map(r => r === "{{ most_common_risk }}" ? 1 : 0),
+          backgroundColor: 'rgba(100, 100, 100, 0.5)'  // Gray bar
+        }]
+      };
+
+      // Render chart for predicted risk
+      new Chart(document.getElementById('predictedRiskChart'), {
+        type: 'bar',
+        data: predictedRiskData,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 }
+            }
+          }
+        }
+      });
+
+      // Render chart for most common risk
+      new Chart(document.getElementById('mostCommonRiskChart'), {
+        type: 'bar',
+        data: mostCommonRiskData,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 }
+            }
+          }
+        }
+      });
+    </script>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
