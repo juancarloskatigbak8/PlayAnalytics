@@ -1,0 +1,90 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlayAnalytics</title>
+
+  <!-- Load Bootstrap via django-bootstrap5 -->
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <!-- Logo Styling -->
+  <style>
+    .navbar-brand img {
+      max-height: 180px;
+      height: auto;
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- === Navigation Bar === -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+    <div class="container-fluid">
+      
+      <!-- Brand/Logo -->
+      <a class="navbar-brand" href="{% url 'player_profiles:index' %}">
+        <img src="{% static 'images/logo.svg' %}" alt="Logo">
+      </a>
+
+      <!-- Toggle Button for Mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Collapsible Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <!-- Left-side Nav Links -->
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:dashboard_view' %}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'predictor:predict_injury' %}">Prediction</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'player_profiles:profile_list' %}">Profiles</a>
+          </li>
+        </ul>
+
+        <!-- Right-side Auth Links -->
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+          {% if user.is_authenticated %}
+            <!-- Show user info and logout if logged in -->
+            <li class="nav-item">
+              <span class="navbar-text me-2">Hi, {{ user.username }}</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+          {% else %}
+            <!-- Show login/register if user not authenticated -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- === Page-Specific Content === -->
+  <main class="container">
+    {% block content %}
+    {% endblock content %}
+  </main>
+
+</body>
+</html>

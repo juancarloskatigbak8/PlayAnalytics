@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- === Hero Section === -->
+<div class="p-4 bg-light rounded-3">
+  <div class="container-fluid py-3">
+    
+    <!-- Main Heading -->
+    <h1 class="display-5 fw-bold">AI-Driven Sports Management Portal.</h1>
+
+    <!-- Description Paragraph -->
+    <p class="fs-4">
+      PlayAnalytics is a sports management portal utilizing machine learning to predict injury risks 
+      and deliver data-driven insights tailored specifically for basketball athletes. 
+      By integrating predictive analytics, PlayAnalytics empowers athletes to proactively minimize 
+      injury risks and optimize training effectiveness.
+    </p>
+
+    <!-- Start Button -->
+    <a href="{% url 'dashboard:dashboard_view' %}" class="btn btn-primary btn-lg">
+      Start
+    </a>
+
+  </div>
+</div>
+{% endblock %}
