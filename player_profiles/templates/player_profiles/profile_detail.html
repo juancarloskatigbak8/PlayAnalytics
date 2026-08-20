@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- === Profile Picture Display === -->
+<div class="text-center mb-4">
+  {% if profile.profile_picture %}
+    <!-- Show uploaded profile picture if it exists -->
+    <img src="{{ profile.profile_picture.url }}"
+         alt="{{ profile.name }}'s Photo"
+         style="max-height: 150px; width: 150px; border-radius: 50%; object-fit: cover;">
+  {% else %}
+    <!-- Show default profile image if none is uploaded -->
+    <img src="{% static 'images/default_profile.png' %}"
+         alt="Default Profile"
+         style="max-height: 150px; width: 150px; border-radius: 50%; object-fit: cover;">
+  {% endif %}
+</div>
+
+<!-- === Player Profile Info === -->
+<h2>{{ profile.name }}</h2>
+<p><strong>Position:</strong> {{ profile.position }}</p>
+<p><strong>Age:</strong> {{ profile.age }}</p>
+<p><strong>Height:</strong> {{ profile.height_in_inches }} inches</p>
+<p><strong>Weight:</strong> {{ profile.weight_in_pounds }} lbs</p>
+<p><strong>Predicted Injury Risk:</strong>
+   <span class="badge bg-info">{{ profile.predicted_risk_label|default:"None" }}</span></p>
+<p><strong>Total Injuries:</strong> {{ profile.total_injuries }}</p>
+<p><strong>Most Common Injury:</strong> {{ profile.most_common_injury }}</p>
+
+<!-- === Edit & Delete Player Buttons === -->
+<div class="d-flex gap-2 mt-3">
+  <!-- Button to edit the player's profile -->
+  <a href="{% url 'player_profiles:edit_player' profile.id %}" class="btn btn-primary">Edit Player</a>
+
+  <!-- Form to delete the player -->
+  <form action="{% url 'player_profiles:delete_player' profile.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete Player</button>
+  </form>
+</div>
+
+<hr class="my-4">
+
+<!-- === Add a New Note Form === -->
+<h4>Notes:</h4>
+<form method="post" class="mb-4">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ note_form.text.errors }}
+    {{ note_form.text }}
+  </div>
+  <button type="submit" class="btn btn-primary">Add Note</button>
+</form>
+
+<!-- === List of Notes === -->
+<ul class="list-group">
+  {% for note in notes %}
+    <li class="list-group-item">
+      <!-- Note timestamp -->
+      <strong>{{ note.created_at|date:"M d, Y H:i" }}</strong><br>
+      <!-- Note text -->
+      {{ note.text }}
+
+      <!-- Edit and Delete buttons for each note -->
+      <div class="mt-2 d-flex gap-2">
+        <!-- Edit note button -->
+        <a href="{% url 'player_profiles:edit_note' note.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+
+        <!-- Delete note form -->
+        <form action="{% url 'player_profiles:delete_note' note.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+      </div>
+    </li>
+  {% empty %}
+    <!-- Displayed if there are no notes -->
+    <li class="list-group-item">No notes yet for this player.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

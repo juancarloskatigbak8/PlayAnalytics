@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- === Page Heading === -->
+  <h2>All Player Profiles</h2>
+
+  <!-- Button to add a new player -->
+  <a href="{% url 'player_profiles:add_player' %}" class="btn btn-success mb-3">Add New Player</a>
+
+  <!-- === Player Profile List === -->
+  <ul class="list-group">
+    {% for profile in profiles %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+
+        <!-- === Profile Info (Photo + Name) === -->
+        <div class="d-flex align-items-center gap-3">
+
+          <!-- Show profile picture if available, otherwise show default -->
+          {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}"
+                 alt="{{ profile.name }}"
+                 class="rounded-circle"
+                 style="width: 50px; height: 50px; object-fit: cover;">
+          {% else %}
+            <img src="{% static 'images/default_profile.png' %}"
+                 alt="Default Profile"
+                 class="rounded-circle"
+                 style="width: 50px; height: 50px; object-fit: cover;">
+          {% endif %}
+
+          <!-- Player name links to their profile detail page -->
+          <a href="{% url 'player_profiles:profile_detail' profile.id %}" class="fw-bold">
+            {{ profile.name }}
+          </a>
+        </div>
+
+        <!-- Show predicted injury risk as a badge -->
+        <span class="badge bg-secondary">
+          {{ profile.predicted_risk_label|default:"None" }}
+        </span>
+      </li>
+    {% empty %}
+      <!-- Message if no player profiles exist -->
+      <li class="list-group-item">No player profiles yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

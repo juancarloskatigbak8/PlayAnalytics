@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- Title showing which player's note is being added -->
+  <h2 class="mt-4 mb-3">Add Note for {{ profile.name }}</h2>
+
+  <!-- Note creation form -->
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Text input field for the note -->
+    <div class="mb-3">
+      {{ form.text.label_tag }}  <!-- Label for the note field -->
+      {{ form.text }}            <!-- The actual textarea input -->
+    </div>
+
+    <!-- Submit and cancel buttons -->
+    <button type="submit" class="btn btn-primary">Save Note</button>
+    <a href="{% url 'player_profiles:profile_detail' profile.id %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

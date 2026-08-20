@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <!-- Page heading with player's name -->
+  <h2>Edit {{ player.name }}'s Profile</h2>
+
+  <!-- Player edit form (multipart for image uploads) -->
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Display player's current profile picture or a default image -->
+    {% if player.profile_picture %}
+      <div class="mb-3">
+        <img src="{{ player.profile_picture.url }}" 
+             alt="{{ player.name }}'s Photo" 
+             style="max-height: 150px; width: 150px; border-radius: 50%; object-fit: cover;">
+      </div>
+    {% else %}
+      <div class="mb-3">
+        <img src="{% static 'images/default_profile.png' %}" 
+             alt="Default Profile" 
+             style="max-height: 150px; width: 150px; border-radius: 50%; object-fit: cover;">
+      </div>
+    {% endif %}
+
+    <!-- Profile picture upload field -->
+    <div class="mb-3">
+      {{ form.profile_picture.label_tag }}
+      {{ form.profile_picture }}
+    </div>
+
+    <!-- Loop through all form fields except profile_picture -->
+    {% for field in form %}
+      {% if field.name != 'profile_picture' %}
+        <div class="mb-3">
+          {{ field.label_tag }}
+          {{ field }}
+          {{ field.errors }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Submit and cancel buttons -->
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{% url 'player_profiles:profile_detail' pk=player.id %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
