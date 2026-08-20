@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <!-- === Page Heading === -->
+  <h2>Register</h2>
+
+  <!-- === Registration Form === -->
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Render all form fields using paragraph format -->
+    {{ form.as_p }}
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-success">Register</button>
+  </form>
+
+</div>
+{% endblock %}

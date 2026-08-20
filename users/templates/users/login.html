@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <!-- === Login Heading === -->
+  <h2>Login</h2>
+
+  <!-- === Login Form === -->
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Username input -->
+    <input 
+      type="text" 
+      name="username" 
+      placeholder="Username" 
+      class="form-control mb-2" 
+      required
+    >
+
+    <!-- Password input -->
+    <input 
+      type="password" 
+      name="password" 
+      placeholder="Password" 
+      class="form-control mb-2" 
+      required
+    >
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <!-- === Link to Registration Page === -->
+  <div class="text-center mt-3">
+    <p class="mb-0">New user? 
+      <a href="{% url 'register' %}">Register here</a>
+    </p>
+  </div>
+
+</div>
+{% endblock %}
