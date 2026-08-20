@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Dashboard</h2>
+
+  <!-- === Summary Cards === -->
+  <!-- This row contains quick summary statistics about all players -->
+  <div class="row text-center mb-4">
+
+    <!-- Card 1: Total number of players -->
+    <div class="col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm">
+        <h5>Number of Players:</h5>
+        <h2>{{ num_players }}</h2>
+      </div>
+    </div>
+
+    <!-- Card 2: Average age of players -->
+    <div class="col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm">
+        <h5>Average Age of Players:</h5>
+        <h2>{{ avg_age }}</h2>
+      </div>
+    </div>
+
+    <!-- Card 3: Average number of injuries recorded -->
+    <div class="col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm">
+        <h5>Average Total Injuries:</h5>
+        <h2>{{ avg_injuries }}</h2>
+      </div>
+    </div>
+
+    <!-- Card 4: Most common injury in the dataset -->
+    <div class="col-md-3">
+      <div class="p-3 bg-light rounded shadow-sm">
+        <h5>Most Common Injury:</h5>
+        <h2>{{ common_injury }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- === CHART SECTION === -->
+
+  <!-- Chart 1: Average injuries per position (e.g., Guard, Forward, Center) -->
+  <h4 class="text-center mt-5">Average Injuries by Position</h4>
+  <canvas id="avgInjuriesChart" height="100"></canvas>
+
+  <!-- Chart 2: Risk level breakdown per position (stacked bar) -->
+  <h4 class="text-center mt-5">Risk Level Distribution per Position</h4>
+  <canvas id="riskChart" height="120"></canvas>
+
+  <!-- Chart 3: Pie chart of injury types (e.g., Ankle, Knee, etc.) -->
+  <h4 class="text-center mt-5">Injury Type Distribution</h4>
+  <canvas id="injuryTypeChart" height="100"></canvas>
+</div>
+
+<!-- === Chart.js CDN === -->
+<!-- This JavaScript library is used to generate dynamic charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- === Chart 1: Average Injuries by Position === -->
+<script>
+  const avgCtx = document.getElementById('avgInjuriesChart').getContext('2d');
+  const avgChart = new Chart(avgCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ injuries_by_position_labels|safe }}, // Positions
+      datasets: [{
+        label: 'Avg Total Injuries',
+        data: {{ injuries_by_position_values|safe }}, // Corresponding average injuries
+        backgroundColor: 'rgba(255, 99, 71, 0.7)' // Tomato color
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }, // Hide legend since it's one series
+        title: { display: true, text: 'Avg Injuries by Position' }
+      },
+      scales: {
+        y: { beginAtZero: true } // Always start Y-axis at 0
+      }
+    }
+  });
+</script>
+
+<!-- === Chart 2: Risk Level Stacked Bar Chart === -->
+<script>
+  const ctx = document.getElementById('riskChart').getContext('2d');
+  const riskChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ positions|safe }}, // Positions (x-axis)
+      datasets: {{ risk_datasets|safe }} // One dataset per risk level (e.g., Low, Medium, High)
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: { mode: 'index', intersect: false },
+        legend: { position: 'top' },
+        title: { display: true, text: 'Risk Level by Position' }
+      },
+      interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false
+      },
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, beginAtZero: true }
+      }
+    }
+  });
+</script>
+
+<!-- === Chart 3: Injury Type Pie Chart === -->
+<script>
+  const injuryCtx = document.getElementById('injuryTypeChart').getContext('2d');
+  const injuryChart = new Chart(injuryCtx, {
+    type: 'pie',
+    data: {
+      labels: {{ injury_type_labels|safe }}, // Injury names
+      datasets: [{
+        label: 'Injury Type Distribution',
+        data: {{ injury_type_values|safe }} // How many times each occurred
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        title: {
+          display: true,
+          text: 'Injury Type Distribution'
+        }
+      }
+    }
+  });
+</script>
+{% endblock content %}
