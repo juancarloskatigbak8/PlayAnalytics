@@ -43,13 +43,13 @@ Fully responsive across desktop, tablet, and mobile via Bootstrap 5.
 
 **Dashboard**
 ![PlayAnalytics Dashboard](screenshot_dashboard.png)
-*Real-time roster overview with summary stats and three interactive charts - average injuries by position, risk level distribution, and injury type breakdown.*
+*Real-time roster overview with summary stats and three interactive charts: average injuries by position, risk level distribution, and injury type breakdown.*
 
 ---
 
 **Injury Risk Prediction**
 ![PlayAnalytics Prediction](screenshot_prediction.png)
-*Player stats input form with Random Forest classification output - returns one of five risk labels: Low, Low-Medium, Medium, Medium-High, or High.*
+*Player stats input form with Random Forest classification output: returns one of five risk labels: Low, Low-Medium, Medium, Medium-High, or High.*
 
 ---
 
@@ -61,7 +61,7 @@ Fully responsive across desktop, tablet, and mobile via Bootstrap 5.
 
 **Feature Importances (Random Forest)**
 ![Feature Importances](screenshot_feature_importance.png)
-*Steals, Free Throws Attempted, and Three-Point Field Goals Attempted ranked as the top injury risk predictors - confirming that active gameplay involvement and workload are stronger indicators than static physical characteristics like height or age.*
+*Steals, Free Throws Attempted, and Three-Point Field Goals Attempted ranked as the top injury risk predictors: confirming that active gameplay involvement and workload are stronger indicators than static physical characteristics like height or age.*
 
 ---
 
