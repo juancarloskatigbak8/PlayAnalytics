@@ -39,7 +39,7 @@ Fully responsive across desktop, tablet, and mobile via Bootstrap 5.
 
 ---
 
-## Tech Stack (Note: This was last updated back in April 2025; update accordingly)
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
