@@ -113,6 +113,28 @@ Validated through a post-development survey with 17 respondents.
 
 ---
 
+## Repository Structure
+
+```
+PlayAnalytics/
+├── play_analytics/         # Django project config (settings, urls, wsgi)
+├── dashboard/              # Dashboard app (roster overview, charts)
+├── predictor/              # Injury risk prediction app (ML model, views)
+├── player_profiles/        # Player profile and journal notes app
+├── users/                  # User authentication app
+├── templates/              # HTML templates
+├── static/images/          # Static assets
+├── media/profile_pictures/ # Uploaded player photos
+├── screenshot_dashboard.png
+├── screenshot_prediction.png
+├── screenshot_profile.png
+├── screenshot_feature_importance.png
+├── manage.py
+└── README.md
+```
+
+---
+
 ## How to Run
 
 **Requirements:** Python 3.11 or higher
