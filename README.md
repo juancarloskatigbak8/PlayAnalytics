@@ -7,20 +7,20 @@ A solo-built web application that predicts basketball injury risk using machine 
 
 ## The Problem
 
-Injury risk data exists. The tools to act on it often don't, at least not for anyone outside a professional analytics team.
+There is such a thing as injury risk data. Unfortunately, the supposed tools that should act on them do not, at least not for anyone outside a professional analytics team.
 
-Coaches and athletes track performance. They log injuries. But the gap between raw data and actionable insight is wide, and most available tools either require a data background to operate or sit behind enterprise-level infrastructure that recreational and semi-professional teams can't access.
+Coaches and athletes do track performance and they do log injuries. However, the gap between raw data and actionable insight is wide, and most of the available tools either require a data background to operate or sit behind enterprise-level infrastructure that recreational and semi-professional teams cannot access.
 
-The gap isn't the science. It's the delivery.
+Therefore, the gap is not in the science but rather the delivery.
 
-PlayAnalytics closes that gap: a simple portal that lets coaches and athletes enter what they already track, run a machine learning prediction, and get a clear injury risk label — no analytics background required.
+This is where PlayAnalytics comes in. PlayAnalytics closes the gap which is a simple portal that lets coaches and athletes enter whatever they already track, run a machine learning prediction, and then get a clear injury risk label with no analytics background required.
 
 ---
 
 ## What PlayAnalytics Does
 
 **Dashboard**
-A real-time roster overview that updates automatically as players are added. Displays total players, average age, average total injuries, and most common injury, alongside three interactive charts:
+A real-time roster overview that updates automatically as players are added. It displays total players, average age, average total injuries, and most common injury, alongside three interactive charts:
 - Average injuries by position (bar chart)
 - Risk level distribution per position (stacked bar chart)
 - Injury type distribution across all profiles (pie chart)
@@ -39,7 +39,7 @@ Fully responsive across desktop, tablet, and mobile via Bootstrap 5.
 
 ---
 
-## Tech Stack
+## Tech Stack (Note: This was last updated back in April 2025; update accordingly)
 
 | Layer | Technology |
 |---|---|
@@ -56,7 +56,7 @@ Fully responsive across desktop, tablet, and mobile via Bootstrap 5.
 
 ## The Machine Learning Model
 
-**Algorithm:** Random Forest Classifier — selected after benchmarking against SVM and XGBoost. Random Forest achieved **96.5% accuracy** on the test set. XGBoost matched that accuracy but produced UndefinedMetricWarning on minority classes due to class imbalance. Random Forest was selected for its robustness, interpretability, and more reliable handling of imbalanced data.
+**Algorithm:** Random Forest Classifier - selected after benchmarking against SVM and XGBoost. Random Forest achieved **96.5% accuracy** on the test set. XGBoost matched that accuracy but produced UndefinedMetricWarning on minority classes due to class imbalance. Random Forest was selected for its robustness, interpretability, and more reliable handling of imbalanced data.
 
 **Data:** Custom-built dataset of 1,000 synthetic player records based on Los Angeles Lakers performance statistics sourced from NBA.com and Pro Sports Transactions. Real player stats were used as the foundation; synthetic records were generated to expand the training set.
 
